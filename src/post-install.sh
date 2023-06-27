@@ -14,3 +14,12 @@
 #  $BOOTLOADER - disk to install grub (either '/dev/sdX or skip)
 #  $EFI_SYSTEM - 1 if boot in UEFI mode
 #
+
+# User creation
+useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
+echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
+
+if [ ! "$ROOT_PSWD" ]; then
+echo -e "${ROOT_PASS}\n${ROOT_PASS}" | passwd -q
+fi
+
