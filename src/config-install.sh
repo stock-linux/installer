@@ -580,7 +580,7 @@ choose_desktop_env() {
 		cclear
 		cprint "1. None"
 		cprint "2. GNOME"
-		cprint "3. KDE"
+		cprint "3. KDE (not yet)"
 		cprint "4. Hyprland"
 		cprint ""
 		cprint "0. Back to main menu"
@@ -589,7 +589,7 @@ choose_desktop_env() {
 		case $input in
 			1) DESKTOP_ENV="None";;
 			2) DESKTOP_ENV="GNOME";;
-			3) DESKTOP_ENV="KDE";;
+			3) continue;;
 			4) DESKTOP_ENV="Hyprland";;
 
 		esac
