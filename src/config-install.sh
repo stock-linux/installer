@@ -58,6 +58,18 @@ printline() {
 	printf "%${cols}s\n" "" | tr " " "*"
 }
 
+create_chroot() {
+	mount -v --bind /dev $ROOT/dev
+	mount -v --bind /dev/pts $ROOT/dev/pts
+	mount -vt proc proc $ROOT/proc
+	mount --rbind /sys $ROOT/sys
+	mount --make-rslave $ROOT/sys
+	mount -vt tmpfs tmpfs $ROOT/run
+	if [ -h $ROOT/dev/shm ]; then
+		mkdir -pv $ROOT/$(readlink $ROOT/dev/shm)
+	fi
+}
+
 choose_part() {
 	unset part createpart filesystem_var
 	case $1 in
@@ -513,9 +525,10 @@ start_install() {
 		VIROOTFS=$VIROOTFS ROOT=$ROOT /root/post-extract.sh
 	fi
 
-	if [ -f /root/post-install.sh ]; then
+	if [ -f $ROOT/post-install.sh ]; then
 		echo "running post-install.sh script"
-		chmod +x /root/post-install.sh
+		create_chroot
+		chmod +x $ROOT/post-install.sh
 		ROOT=$ROOT \
 		HOSTNAME=$HOSTNAME \
 		TIMEZONE=$TIMEZONE \
@@ -527,7 +540,8 @@ start_install() {
 		BOOTLOADER=$BOOTLOADER \
 		EFI_SYSTEM=$EFI_SYSTEM \
 		DESKTOP_ENV=$DESKTOP_ENV \
-		/root/post-install.sh
+		chroot $ROOT \
+		./post-install.sh
 	fi
 
 	# fstab
