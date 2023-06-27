@@ -578,21 +578,24 @@ choose_desktop_env() {
 	unset done
 	while [ ! "$done" ]; do
 		cclear
-		cprint "1. GNOME"
-		cprint "2. KDE"
-		cprint "3. Hyprland"
+		cprint "1. None"
+		cprint "2. GNOME"
+		cprint "3. KDE"
+		cprint "4. Hyprland"
 		cprint ""
 		cprint "0. Back to main menu"
 		prompt_user "Enter choice [0-3]: "
 		read input
 		case $input in
-			1) DESKTOP_ENV="GNOME";;
-			2) DESKTOP_ENV="KDE";;
-			3) DESKTOP_ENV="Hyprland";;
+			1) DESKTOP_ENV="None";;
+			2) DESKTOP_ENV="GNOME";;
+			3) DESKTOP_ENV="KDE";;
+			4) DESKTOP_ENV="Hyprland";;
+
 		esac
-		[ "$input" -gt "3" ] && continue
+		[ "$input" -gt "4" ] && continue
 		done=$input
-	done 
+	done
 }
 
 
