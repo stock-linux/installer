@@ -455,6 +455,7 @@ check_var() {
 	[ "$USERNAME" ]   || { error=1; cprint "user is not set up"; }
 	[ "$ROOT_PSWD" ]  || { error=1; cprint "root password is not set up"; }
 	[ "$BOOTLOADER" ] || { error=1; cprint "bootloader is not set up"; }
+	[ "$BOOTLOADER_T" ] || { error=1; cprint "bootloder softare is not set up (how do we get there?)"; }
 	if [ "$error" = 1 ]; then
 		prompt_user "Press ENTER to back to main menu..."
 		read input
