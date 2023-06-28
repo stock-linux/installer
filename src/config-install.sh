@@ -373,6 +373,7 @@ config_bootloader() {
 			BOOTLOADER=$(showdisk | head -n$input | tail -n1)
 		fi
 	done
+	[ ! "$BOOTLOADER_T" ] && BOOTLOADER_T="systemd-boot"
 	while [ ! "$done" ]; do
 		cclear
 		cprint "Choose the bootloader (current: $BOOTLOADER_T)"
