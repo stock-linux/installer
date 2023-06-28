@@ -537,11 +537,10 @@ start_install() {
 	fi
 
 	echo "Installing system to $root_partition_var"
-
-	fi
+	create_chroot
+	chroot $ROOT squirrel install base
 
 	echo "running post-install.sh script"
-	create_chroot
 	chmod +x $ROOT/post-install.sh
 	ROOT=$ROOT \
 	HOSTNAME=$HOSTNAME \
