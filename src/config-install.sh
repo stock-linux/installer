@@ -354,6 +354,7 @@ config_rootpswd() {
 
 config_bootloader() {
 	unset BOOTLOADER
+	unset done
 	while [ ! "$BOOTLOADER" ]; do
 		cclear
 		count=0
@@ -371,6 +372,23 @@ config_bootloader() {
 		else
 			BOOTLOADER=$(showdisk | head -n$input | tail -n1)
 		fi
+	done
+	while [ ! "$done" ]; do
+		cclear
+		cprint "Choose the bootloader (current: $BOOTLOADER_T)"
+		cprint ""
+		cprint "1. systemd-boot (default)"
+		cprint "2. GRUB"
+		cprint ""
+		cprint "0. skip"
+		prompt_user "Enter choice [0-2]: "
+		read input
+		case $input in
+			1) BOOTLOADER_T="systemd-boot";;
+			2) BOOTLOADER_T="GRUB";;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done="$input"
 	done
 }
 
@@ -538,6 +556,7 @@ start_install() {
 		ROOT_PSWD=$ROOT_PSWD \
 		LOCALE=$LOCALE \
 		BOOTLOADER=$BOOTLOADER \
+		BOOTLOADER_T=$BOOTLOADER_T \
 		EFI_SYSTEM=$EFI_SYSTEM \
 		DESKTOP_ENV=$DESKTOP_ENV \
 		chroot $ROOT \
