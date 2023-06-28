@@ -658,7 +658,7 @@ print_selection() {
 	cprint "6. user account: $USERNAME $(echo $USER_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint "7. root account: $(echo $ROOT_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint ""
-	cprint "8. bootloader: $BOOTLOADER"
+	cprint "8. bootloader: $BOOTLOADER_T on $BOOTLOADER"
 	cprint ""
 	cprint "9. desktop environement: $DESKTOP_ENV"
 	cprint ""
