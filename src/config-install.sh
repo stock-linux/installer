@@ -354,6 +354,7 @@ config_rootpswd() {
 
 config_bootloader() {
 	unset BOOTLOADER
+	unset done
 	while [ ! "$BOOTLOADER" ]; do
 		cclear
 		count=0
@@ -371,6 +372,24 @@ config_bootloader() {
 		else
 			BOOTLOADER=$(showdisk | head -n$input | tail -n1)
 		fi
+	done
+	[ ! "$BOOTLOADER_T" ] && BOOTLOADER_T="systemd-boot"
+	while [ ! "$done" ]; do
+		cclear
+		cprint "Choose the bootloader (current: $BOOTLOADER_T)"
+		cprint ""
+		cprint "1. systemd-boot (default)"
+		cprint "2. GRUB"
+		cprint ""
+		cprint "0. skip"
+		prompt_user "Enter choice [0-2]: "
+		read input
+		case $input in
+			1) BOOTLOADER_T="systemd-boot";;
+			2) BOOTLOADER_T="GRUB";;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done="$input"
 	done
 }
 
@@ -436,6 +455,7 @@ check_var() {
 	[ "$USERNAME" ]   || { error=1; cprint "user is not set up"; }
 	[ "$ROOT_PSWD" ]  || { error=1; cprint "root password is not set up"; }
 	[ "$BOOTLOADER" ] || { error=1; cprint "bootloader is not set up"; }
+	[ "$BOOTLOADER_T" ] || { error=1; cprint "bootloder softare is not set up (how do we get there?)"; }
 	if [ "$error" = 1 ]; then
 		prompt_user "Press ENTER to back to main menu..."
 		read input
@@ -538,6 +558,7 @@ start_install() {
 		ROOT_PSWD=$ROOT_PSWD \
 		LOCALE=$LOCALE \
 		BOOTLOADER=$BOOTLOADER \
+		BOOTLOADER_T=$BOOTLOADER_T \
 		EFI_SYSTEM=$EFI_SYSTEM \
 		DESKTOP_ENV=$DESKTOP_ENV \
 		chroot $ROOT \
@@ -637,7 +658,7 @@ print_selection() {
 	cprint "6. user account: $USERNAME $(echo $USER_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint "7. root account: $(echo $ROOT_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint ""
-	cprint "8. bootloader: $BOOTLOADER"
+	cprint "8. bootloader: $BOOTLOADER_T on $BOOTLOADER"
 	cprint ""
 	cprint "9. desktop environement: $DESKTOP_ENV"
 	cprint ""
