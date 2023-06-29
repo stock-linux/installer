@@ -465,16 +465,16 @@ check_var() {
 
 start_install() {
 	cclear
-	
+
 	swap_part=${swap_var%:*}
 	swap_part_create=${swap_var#*:}
 	root_part=${root_var%:*}
 	root_part_fs=${root_var#*:}
 	home_part=${home_var%:*}
 	home_part_fs=${home_var#*:}
-	
+
 	check_var || return 0
-	
+
 	# overview
 	cprint "*** Partition Overview ***"
 	echo
@@ -485,15 +485,15 @@ start_install() {
 	if [ "$home_part" ] && [ "$home_part_fs" != skip ]; then
 		cprint "$home_part will be format into $home_part_fs"
 	fi
-	
+
 	prompt_user "Press ENTER to continue installation..."
 	read input
-	
+
 	mountpoint -q $ROOT && umount -Rf $ROOT
-	
+
 	rm -fr $ROOT
 	mkdir -p $ROOT
-	
+
 	if [ "$root_part_fs" != skip ]; then
 		echo "Create filesystem $root_part_fs on $root_part"
 		case $root_part_fs in
@@ -503,10 +503,10 @@ start_install() {
 			btrfs) mkfs.btrfs -f -L Stock $root_part;;
 		esac
 	fi
-	
+
 	echo "Mounting $root_part on $ROOT"
 	mount $root_part $ROOT
-	
+
 	if [ "$home_part" ]; then
 		if [ "$home_part_fs" != skip ]; then
 			echo "Create filesystem $home_part_fs on $home_part"
@@ -537,33 +537,25 @@ start_install() {
 	fi
 
 	echo "Installing system to $root_partition_var"
-	unsquashfs -f -i -d $ROOT $ROOTSFS
+	create_chroot
+	chroot $ROOT squirrel install base
 
-	if [ -f /root/post-extract.sh ]; then
-		echo "running post-extract.sh script"
-		chmod +x /root/post-extract.sh
-		VIROOTFS=$VIROOTFS ROOT=$ROOT /root/post-extract.sh
-	fi
-
-	if [ -f $ROOT/post-install.sh ]; then
-		echo "running post-install.sh script"
-		create_chroot
-		chmod +x $ROOT/post-install.sh
-		ROOT=$ROOT \
-		HOSTNAME=$HOSTNAME \
-		TIMEZONE=$TIMEZONE \
-		KEYMAP=$KEYMAP \
-		USERNAME=$USERNAME \
-		USER_PSWD=$USER_PSWD \
-		ROOT_PSWD=$ROOT_PSWD \
-		LOCALE=$LOCALE \
-		BOOTLOADER=$BOOTLOADER \
-		BOOTLOADER_T=$BOOTLOADER_T \
-		EFI_SYSTEM=$EFI_SYSTEM \
-		DESKTOP_ENV=$DESKTOP_ENV \
-		chroot $ROOT \
-		./post-install.sh
-	fi
+	echo "running post-install.sh script"
+	chmod +x $ROOT/post-install.sh
+	ROOT=$ROOT \
+	HOSTNAME=$HOSTNAME \
+	TIMEZONE=$TIMEZONE \
+	KEYMAP=$KEYMAP \
+	USERNAME=$USERNAME \
+	USER_PSWD=$USER_PSWD \
+	ROOT_PSWD=$ROOT_PSWD \
+	LOCALE=$LOCALE \
+	BOOTLOADER=$BOOTLOADER \
+	BOOTLOADER_T=$BOOTLOADER_T \
+	EFI_SYSTEM=$EFI_SYSTEM \
+	DESKTOP_ENV=$DESKTOP_ENV \
+	chroot $ROOT \
+	./post-install.sh
 
 	# fstab
 	echo "Setup fstab"
@@ -682,7 +674,7 @@ main() {
 			6) config_useraccount;;
 			7) config_rootpswd;;
 			8) config_bootloader;;
-			9) choose_desktop_env;; 
+			9) choose_desktop_env;;
 			10) start_install;;
 			0) exit;;
 		esac
@@ -695,14 +687,6 @@ if [ "$(id -u)" != 0 ]; then
 fi
 
 ROOT=/mnt/install
-
-if [ -f "/run/initramfs/ram/filesystem.sfs" ]; then
-	ROOTSFS="/run/initramfs/ram/filesystem.sfs"
-	VIROOTFS="/run/initramfs/ram/virootfs"
-else
-	ROOTSFS="/run/initramfs/medium/rootfs/filesystem.sfs"
-	VIROOTFS="/run/initramfs/medium/virootfs"
-fi
 
 if [ -e /sys/firmware/efi/systab ]; then
 	EFI_SYSTEM=1
