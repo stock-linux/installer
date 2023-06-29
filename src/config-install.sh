@@ -688,14 +688,6 @@ fi
 
 ROOT=/mnt/install
 
-if [ -f "/run/initramfs/ram/filesystem.sfs" ]; then
-	ROOTSFS="/run/initramfs/ram/filesystem.sfs"
-	VIROOTFS="/run/initramfs/ram/virootfs"
-else
-	ROOTSFS="/run/initramfs/medium/rootfs/filesystem.sfs"
-	VIROOTFS="/run/initramfs/medium/virootfs"
-fi
-
 if [ -e /sys/firmware/efi/systab ]; then
 	EFI_SYSTEM=1
 fi
