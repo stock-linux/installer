@@ -16,6 +16,10 @@
 #  $EFI_SYSTEM   - 1 if boot in UEFI mode
 #
 
+# systemd config
+systemctl preset-all
+systelctl systemd-machine-id-setup
+
 # Hostname
 echo "$HOSTNAME" > /etc/hostname
 
