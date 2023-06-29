@@ -16,6 +16,9 @@
 #  $EFI_SYSTEM   - 1 if boot in UEFI mode
 #
 
+# Hostname
+echo "$HOSTNAME" > /etc/hostname
+
 # User creation
 useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
