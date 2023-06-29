@@ -19,6 +19,9 @@
 # Hostname
 echo "$HOSTNAME" > /etc/hostname
 
+# Timezone
+ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+
 # User creation
 useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
