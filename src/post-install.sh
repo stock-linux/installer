@@ -34,3 +34,25 @@ fi
 sed "s/#$LOCALE/$LOCALE/" -i /etc/locales
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
+
+# Bootloader
+case $BOOTLOADER_T in
+	"GRUB")
+		squirrel install grub
+		echo GRUB_DISABLE_OS_PROBER=false >> $ROOT/etc/default/grub
+		if [ "$EFI_system" = 1 ]; then
+			# EFI
+			grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Stock Linux" --recheck $BOOTLOADER
+		else
+			# MBR
+			grub-install --target=i386-pc $BOOTLOADER
+		fi
+		grub-mkconfig -o /boot/grub/grub.cfg
+		;;
+
+	"systemd-boot")
+		echo "Not supported yet";;
+
+	*)
+		echo "No bootloader to install";;
+
