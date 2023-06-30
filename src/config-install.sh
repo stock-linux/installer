@@ -454,6 +454,7 @@ check_var() {
 	[ "$HOSTNAME" ]   || { error=1; cprint "hostname is not set up"; }
 	[ "$USERNAME" ]   || { error=1; cprint "user is not set up"; }
 	[ "$ROOT_PSWD" ]  || { error=1; cprint "root password is not set up"; }
+	[ "$KERNEL" ]     || { error=1: cprint "kernel is not set up"; }
 	[ "$BOOTLOADER" ] || { error=1; cprint "bootloader is not set up"; }
 	[ "$BOOTLOADER_T" ] || { error=1; cprint "bootloder softare is not set up (how do we get there?)"; }
 	if [ "$error" = 1 ]; then
@@ -553,6 +554,7 @@ start_install() {
 	BOOTLOADER=$BOOTLOADER \
 	BOOTLOADER_T=$BOOTLOADER_T \
 	EFI_SYSTEM=$EFI_SYSTEM \
+	KERNEL=$KERNEL
 	DESKTOP_ENV=$DESKTOP_ENV \
 	chroot $ROOT \
 	./post-install.sh
@@ -625,6 +627,24 @@ choose_desktop_env() {
 	done
 }
 
+config_kernel() {
+	unset done
+	while [ ! "$done" ]; do
+		cclear
+		cprint "1. LTS"
+		cprint "2. Current"
+		cprint ""
+		cprint "0. Back to main menu"
+		prompt_user "Enter choice [0-2]: "
+		read input
+		case $input in
+			1) KERNEL="LTS";;
+			2) KERNEL="Current";;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done=$input
+	done
+}
 
 print_partitioning_tips() {
 	cclear
@@ -652,9 +672,11 @@ print_selection() {
 	cprint ""
 	cprint "8. bootloader: $BOOTLOADER_T on $BOOTLOADER"
 	cprint ""
-	cprint "9. desktop environement: $DESKTOP_ENV"
+	cprint "9. kernel: $KERNEL"
 	cprint ""
-	cprint "10. Start Installation"
+	cprint "10. desktop environement: $DESKTOP_ENV"
+	cprint ""
+	cprint "11. Start Installation"
 	cprint ""
 	cprint "0. exit installer"
 }
@@ -663,7 +685,7 @@ main() {
 	while true; do
 		cclear
 		print_selection
-		prompt_user "Enter choice [1-10]: "
+		prompt_user "Enter choice [1-11]: "
 		read input
 		case $input in
 			1) config_rootpart;;
@@ -674,8 +696,9 @@ main() {
 			6) config_useraccount;;
 			7) config_rootpswd;;
 			8) config_bootloader;;
-			9) choose_desktop_env;;
-			10) start_install;;
+			9) config_kernel;;
+			10) choose_desktop_env;;
+			11) start_install;;
 			0) exit;;
 		esac
 	done
@@ -691,6 +714,8 @@ ROOT=/mnt/install
 if [ -e /sys/firmware/efi/systab ]; then
 	EFI_SYSTEM=1
 fi
+
+KERNEL="LTS"
 
 main
 
