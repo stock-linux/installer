@@ -14,6 +14,7 @@
 #  $BOOTLOADER   - disk to install grub (either '/dev/sdX or skip)
 #  $BOOTLOADER_T - bootloader software
 #  $EFI_SYSTEM   - 1 if boot in UEFI mode
+#  $KERNEL       - kernel to install
 #
 
 # systemd config
@@ -38,6 +39,11 @@ fi
 sed "s/#$LOCALE/$LOCALE/" -i /etc/locales
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
+
+# Kernel
+case $KERNEL in
+	"LTS")
+		squirrel install linux-lts;;
 
 # Bootloader
 case $BOOTLOADER_T in
