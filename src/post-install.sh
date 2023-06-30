@@ -17,8 +17,8 @@
 #
 
 # systemd config
-systemctl preset-all
 systelctl systemd-machine-id-setup
+systemctl preset-all
 
 # Hostname
 echo "$HOSTNAME" > /etc/hostname
