@@ -543,6 +543,7 @@ start_install() {
  	cat > $ROOT/etc/squirrel.conf << EOF
 stocklinux https://packages.stocklinux.org/x86_64/testing
 EOF
+	ROOT=$ROOT squirrel sync
 	ROOT=$ROOT squirrel install base
 
 	echo "running post-install.sh script"
