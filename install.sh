@@ -9,6 +9,7 @@ fi
 
 [ ! $(which make) ] && echo "make need to be installed" && exit 1
 [ ! $(which curl) ] && echo "curl need to be installed" && exit 1
+[ ! $(which git) ] && echo "git need to be installed" && exit 1
 
 echo "Info: squirrel will be installed on your system, don't use it because it can break your system packages!"
 
