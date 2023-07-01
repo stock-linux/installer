@@ -8,7 +8,7 @@ if [ "$(id -u)" != 0 ]; then
 fi
 
 [ ! $(which make) ] && echo "make need to be installed" && exit 1
-
+[ ! $(which curl) ] && echo "curl need to be installed" && exit 1
 
 echo "Info: squirrel will be installed on your system, don't use it because it can break your system packages!"
 
@@ -24,8 +24,8 @@ else
 
 fi
 
-wget https://github.com/stock-linux/installer/raw/main/src/config-install.sh
-wget https://github.com/stock-linux/installer/raw/main/src/post-install.sh
+curl https://github.com/stock-linux/installer/raw/main/src/config-install.sh
+curl https://github.com/stock-linux/installer/raw/main/src/post-install.sh
 
 chmod +x config-install.sh
 
