@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+if [ "$(id -u)" != 0 ]; then
+        echo "root access required to install!"
+        exit 1
+fi
+
+[ ! $(which make) ] && echo "make need to be installed" && exit 1
+
+
+echo "Info: squirrel will be installed on your system, don't use it because it can break your system packages!"
+
+if [ -e ./stock-packaging ]; then
+  cd stock-packaging
+  git pull
+  make install
+
+else
+  git clone https://github.com/stock-linux/stock-packaging
+  cd stock-packaging
+  make install
+
+fi
+
+wget https://github.com/stock-linux/installer/raw/main/src/config-install.sh
+wget https://github.com/stock-linux/installer/raw/main/src/post-install.sh
+
+chmod +x config-install.sh
+
+./config-install.sh
+
