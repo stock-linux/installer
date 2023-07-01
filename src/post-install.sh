@@ -42,12 +42,17 @@ echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
 
 # Kernel
 case $KERNEL in
-	"LTS")
-		squirrel install linux-lts;;
+	LTS)
+		squirrel install linux-lts
+  		;;
+  	*)
+   		echo "No kernel to install"
+     		;;
+esac
 
 # Bootloader
 case $BOOTLOADER_T in
-	"GRUB")
+	GRUB)
 		squirrel install grub
 		echo GRUB_DISABLE_OS_PROBER=false >> $ROOT/etc/default/grub
 		if [ "$EFI_system" = 1 ]; then
@@ -60,9 +65,9 @@ case $BOOTLOADER_T in
 		grub-mkconfig -o /boot/grub/grub.cfg
 		;;
 
-	"systemd-boot")
+	systemd-boot)
 		echo "Not supported yet";;
 
 	*)
 		echo "No bootloader to install";;
-
+esac
