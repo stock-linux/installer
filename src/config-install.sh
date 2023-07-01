@@ -538,13 +538,13 @@ start_install() {
 	fi
 
 	echo "Installing system to $root_partition_var"
-	create_chroot
  	mkdir -p $ROOT/etc
  	cat > $ROOT/etc/squirrel.conf << EOF
 stocklinux https://packages.stocklinux.org/x86_64/testing
 EOF
 	ROOT=$ROOT squirrel sync
 	ROOT=$ROOT squirrel install base
+ 	create_chroot
 
 	echo "running post-install.sh script"
 	chmod +x $ROOT/post-install.sh
