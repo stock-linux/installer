@@ -36,7 +36,6 @@ echo -e "${ROOT_PASS}\n${ROOT_PASS}" | passwd -q
 fi
 
 # Locale
-sed "s/#$LOCALE/$LOCALE/" -i /etc/locales
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
 
