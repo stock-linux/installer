@@ -47,7 +47,7 @@ case $BOOTLOADER_T in
 		echo GRUB_DISABLE_OS_PROBER=false >> /etc/default/grub
 		if [ "$EFI_SYSTEM" = 1 ]; then
 			# EFI
-			grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Stock Linux" --recheck $BOOTLOADER
+			grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="stock"
 		else
 			# MBR
 			grub-install --target=i386-pc $BOOTLOADER
