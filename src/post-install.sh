@@ -35,7 +35,7 @@ useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
 
 if [ "$ROOT_PSWD" != "" ]; then
-echo -e "${ROOT_PASS}\n${ROOT_PASS}" | passwd -q
+echo -e "${ROOT_PSWD}\n${ROOT_PSWD}" | passwd -q
 fi
 
 # Locale
