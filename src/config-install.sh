@@ -547,6 +547,7 @@ EOF
  	create_chroot
 
 	echo "running post-install.sh script"
+ 	cp post-install.sh $ROOT/post-install.sh
 	chmod +x $ROOT/post-install.sh
 	ROOT=$ROOT \
 	HOSTNAME=$HOSTNAME \
@@ -562,7 +563,7 @@ EOF
 	KERNEL=$KERNEL
 	DESKTOP_ENV=$DESKTOP_ENV \
 	chroot $ROOT \
-	./post-install.sh
+	/post-install.sh
 
 	# fstab
 	echo "Setup fstab"
