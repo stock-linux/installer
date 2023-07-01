@@ -552,6 +552,7 @@ EOF
 	chmod +x $ROOT/post-install.sh
 
 	chroot $ROOT /usr/bin/env -i \
+ 	PATH="/usr/sbin:/usr/bin" \
 	HOSTNAME=$HOSTNAME \
 	TIMEZONE=$TIMEZONE \
 	KEYMAP=$KEYMAP \
