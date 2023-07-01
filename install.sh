@@ -25,6 +25,8 @@ else
 
 fi
 
+cd ..
+
 curl -L -o config-install.sh https://github.com/stock-linux/installer/raw/main/src/config-install.sh
 curl -L -o post-install.sh https://github.com/stock-linux/installer/raw/main/src/post-install.sh
 
