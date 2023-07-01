@@ -40,22 +40,13 @@ sed "s/#$LOCALE/$LOCALE/" -i /etc/locales
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
 
-# Kernel
-case $KERNEL in
-	LTS)
-		squirrel install linux-lts
-  		;;
-  	*)
-   		echo "No kernel to install"
-     		;;
-esac
-
 # Bootloader
 case $BOOTLOADER_T in
 	GRUB)
-		squirrel install grub
-		echo GRUB_DISABLE_OS_PROBER=false >> $ROOT/etc/default/grub
-		if [ "$EFI_system" = 1 ]; then
+		mkdir -p /boot/grub
+  		mkdir -p /etc/default
+		echo GRUB_DISABLE_OS_PROBER=false >> /etc/default/grub
+		if [ "$EFI_SYSTEM" = 1 ]; then
 			# EFI
 			grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Stock Linux" --recheck $BOOTLOADER
 		else
@@ -69,4 +60,14 @@ case $BOOTLOADER_T in
 
 	*)
 		echo "No bootloader to install";;
+esac
+
+# Kernel
+case $KERNEL in
+	LTS)
+		squirrel install linux-lts
+  		;;
+  	*)
+   		echo "No kernel to install"
+     		;;
 esac
