@@ -13,7 +13,11 @@ showpartition() {
 }
 
 showkeymap() {
-	find /usr/share/keymaps/ -type f -iname "*.map.gz" -printf "%f\n" | sed 's|.map.gz||g' | sort
+	if [ -d /usr/share/kbd/keymaps ]; then
+		find /usr/share/kbd/keymaps/ -type f -iname "*.map.gz" -printf "%f\n" | sed 's|.map.gz||g' | sort
+	else
+		find /usr/share/keymaps/ -type f -iname "*.map.gz" -printf "%f\n" | sed 's|.map.gz||g' | sort
+  	fi
 }
 
 showlocale() {
