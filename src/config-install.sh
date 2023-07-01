@@ -549,7 +549,8 @@ EOF
 	echo "running post-install.sh script"
  	cp post-install.sh $ROOT/post-install.sh
 	chmod +x $ROOT/post-install.sh
-	ROOT=$ROOT \
+
+	chroot $ROOT /usr/bin/env -i \
 	HOSTNAME=$HOSTNAME \
 	TIMEZONE=$TIMEZONE \
 	KEYMAP=$KEYMAP \
@@ -560,10 +561,9 @@ EOF
 	BOOTLOADER=$BOOTLOADER \
 	BOOTLOADER_T=$BOOTLOADER_T \
 	EFI_SYSTEM=$EFI_SYSTEM \
-	KERNEL=$KERNEL
+	KERNEL=$KERNEL \
 	DESKTOP_ENV=$DESKTOP_ENV \
-	chroot $ROOT \
-	/post-install.sh
+ 	/bin/bash /post-install.sh
 
 	# fstab
 	echo "Setup fstab"
