@@ -538,7 +538,7 @@ start_install() {
 		mount $efi_var $ROOT/boot/efi
 	fi
 
-	echo "Installing system to $root_partition_var"
+	echo "Installing system to $root_var"
  	mkdir -p $ROOT/etc
  	cat > $ROOT/etc/squirrel.conf << EOF
 stocklinux https://packages.stocklinux.org/x86_64/testing
