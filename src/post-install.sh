@@ -62,7 +62,6 @@ case $BOOTLOADER_T in
 			# MBR
 			grub-install --target=i386-pc $BOOTLOADER
 		fi
-		grub-mkconfig -o /boot/grub/grub.cfg
 		;;
 
 	systemd-boot)
