@@ -24,6 +24,9 @@ systemctl preset-all
 # Hostname
 echo "$HOSTNAME" > /etc/hostname
 
+# Keymap
+echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
+
 # Timezone
 ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
