@@ -466,6 +466,7 @@ check_var() {
 
 start_install() {
 	cclear
+ 	unset done
 
 	swap_part=${swap_var%:*}
 	swap_part_create=${swap_var#*:}
