@@ -34,7 +34,7 @@ ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
 
-if [ ! "$ROOT_PSWD" ]; then
+if [ "$ROOT_PSWD" != "" ]; then
 echo -e "${ROOT_PASS}\n${ROOT_PASS}" | passwd -q
 fi
 
