@@ -17,7 +17,7 @@ showkeymap() {
 }
 
 showlocale() {
-	grep "UTF-8" /etc/locales | awk '{print $1}' | sed 's/^#//;s/\.UTF-8//'
+	grep "UTF-8" /usr/share/i18n/SUPPORTED | awk '{print $1}' | sed 's/^#//;s/\.UTF-8//'
 }
 
 get_partition_info() {
