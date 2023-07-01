@@ -41,6 +41,7 @@ fi
 # Locale
 echo "LANG=$LOCALE.UTF-8" > /etc/locale.conf
 echo "LC_ALL=$LOCALE.UTF-8" >> /etc/environment
+echo "PATH=\"/usr/sbin:/usr/bin\"" >> /etc/environment
 
 # Bootloader
 case $BOOTLOADER_T in
