@@ -31,7 +31,7 @@ echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
 ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 # User creation
-useradd -m -G users,wheel,audio,video -s /bin/bash $USERNAME
+useradd -m -G users,wheel,audio,video,input -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
 
 if [ "$ROOT_PSWD" != "" ]; then
