@@ -30,6 +30,9 @@ echo "KEYMAP=$KEYMAP" > /etc/vconsole.conf
 # Timezone
 ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
+pwconv
+grpconv
+
 # User creation
 useradd -m -G users,wheel,audio,video,input -s /bin/bash $USERNAME
 echo -e "${USER_PSWD}\n${USER_PSWD}" | passwd -q $USERNAME
