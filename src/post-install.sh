@@ -79,3 +79,15 @@ case $KERNEL in
    		echo "No kernel to install"
      		;;
 esac
+
+case $DESKTOP_ENV in
+	GNOME)
+ 		squirrel install gnome
+   		;;
+     	None)
+      		echo "No desktop environment to install."
+		;;
+	*)
+ 		echo "No desktop environment to install."
+   		;;
+esac
