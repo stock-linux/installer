@@ -448,6 +448,29 @@ config_timezone() {
 	TIMEZONE=$location/$country
 }
 
+config_advanced() {
+	unset done
+
+	while [ ! "$done" ]; do
+		cclear
+
+		cprint "1. bootloader: $BOOTLOADER_T on $BOOTLOADER"
+		cprint "2. kernel: $KERNEL"
+		cprint ""
+		cprint "0. Back to main menu"
+		cprint ""
+		prompt_user "Enter choice [0-2]: "
+		read input
+
+		case $input in
+			1) config_bootloader;;
+			2) config_kernel;;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done=$input
+	done
+}
+
 check_var() {
 	cclear
 	unset error
@@ -682,13 +705,11 @@ print_selection() {
 	cprint "6. user account: $USERNAME $(echo $USER_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint "7. root account: $(echo $ROOT_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint ""
-	cprint "8. bootloader: $BOOTLOADER_T on $BOOTLOADER"
+	cprint "8. desktop environement: $DESKTOP_ENV"
 	cprint ""
-	cprint "9. kernel: $KERNEL"
+	cprint "9. Start Installation"
 	cprint ""
-	cprint "10. desktop environement: $DESKTOP_ENV"
-	cprint ""
-	cprint "11. Start Installation"
+	cprint "10. Advanced configuration"
 	cprint ""
 	cprint "0. exit installer"
 }
@@ -707,10 +728,9 @@ main() {
 			5) config_hostname;;
 			6) config_useraccount;;
 			7) config_rootpswd;;
-			8) config_bootloader;;
-			9) config_kernel;;
-			10) choose_desktop_env;;
-			11) start_install;;
+			8) choose_desktop_env;;
+			9) start_install;;
+			10) config_advanced;;
 			0) exit;;
 		esac
 	done
