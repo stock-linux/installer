@@ -748,6 +748,7 @@ if [ -e /sys/firmware/efi/systab ]; then
 fi
 
 KERNEL="LTS"
+BOOTLOADER_T="GRUB"
 
 main
 
