@@ -187,6 +187,30 @@ modify_disk() {
 	$disktool $disk
 }
 
+config_partitioning() {
+	unset done
+	while [ ! "$done" ]; do
+		cclear
+
+		cprint "1. Auto partitioning"
+		cprint ""
+		cprint "2. Manual partitioning"
+		cprint ""
+		cprint ""
+		cprint "0. Back to main menu"
+		prompt_user "Select partitioning way [1-2]: "
+		read input
+		case $input in
+			1) cclear; cprint "Not yet"; prompt_user "[Enter] to continue"; read;;
+			2) config_rootpart;;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done="$input"
+
+
+	done
+}
+
 config_rootpart() {
 	unset partstatus
 	print_partitioning_tips
@@ -448,6 +472,28 @@ config_timezone() {
 	TIMEZONE=$location/$country
 }
 
+config_advanced() {
+	while true; do
+		cclear
+
+		cprint "1. bootloader: $BOOTLOADER_T on $BOOTLOADER"
+		cprint "2. kernel: $KERNEL"
+		cprint "3. software branch: $SOFTWARE_BRANCH"
+		cprint ""
+		cprint "0. Back to main menu"
+		cprint ""
+		prompt_user "Enter choice [0-3]: "
+		read input
+
+		case $input in
+			1) config_bootloader;;
+			2) config_kernel;;
+			3) config_software_branch;;
+			0) break;;
+		esac
+	done
+}
+
 check_var() {
 	cclear
 	unset error
@@ -658,6 +704,29 @@ config_kernel() {
 	done
 }
 
+config_software_branch() {
+	unset done
+	while [ ! "$done" ]; do
+		cclear
+		cprint "1. rolling (not ready yet)"
+		cprint "'rolling' is the default branch for Stock Linux. It is the stablest"
+		cprint ""
+		cprint "2. testing"
+		cprint "'testing' is the dev branch. Not stable as 'rolling'"
+		cprint ""
+		cprint "0. Back to Advanced menu"
+		prompt_user "Enter choice [0-2]: "
+		read input
+		case $input in
+			1) continue;; #SOFTWARE_BRANCH="rolling";;
+			2) SOFTWARE_BRANCH="testing";;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done=$input
+	done
+}
+
+
 print_partitioning_tips() {
 	cclear
 	cprint "# Partitioning Tips #"
@@ -682,13 +751,11 @@ print_selection() {
 	cprint "6. user account: $USERNAME $(echo $USER_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint "7. root account: $(echo $ROOT_PSWD | tr '[:alpha:]' '*' | tr '[:alnum:]' '*')"
 	cprint ""
-	cprint "8. bootloader: $BOOTLOADER_T on $BOOTLOADER"
+	cprint "8. desktop environement: $DESKTOP_ENV"
 	cprint ""
-	cprint "9. kernel: $KERNEL"
+	cprint "9. Start Installation"
 	cprint ""
-	cprint "10. desktop environement: $DESKTOP_ENV"
-	cprint ""
-	cprint "11. Start Installation"
+	cprint "10. Advanced configuration"
 	cprint ""
 	cprint "0. exit installer"
 }
@@ -700,17 +767,16 @@ main() {
 		prompt_user "Enter choice [1-11]: "
 		read input
 		case $input in
-			1) config_rootpart;;
+			1) config_partitioning;;
 			2) config_keymap;;
 			3) config_timezone;;
 			4) config_locale;;
 			5) config_hostname;;
 			6) config_useraccount;;
 			7) config_rootpswd;;
-			8) config_bootloader;;
-			9) config_kernel;;
-			10) choose_desktop_env;;
-			11) start_install;;
+			8) choose_desktop_env;;
+			9) start_install;;
+			10) config_advanced;;
 			0) exit;;
 		esac
 	done
@@ -728,6 +794,8 @@ if [ -e /sys/firmware/efi/systab ]; then
 fi
 
 KERNEL="LTS"
+BOOTLOADER_T="GRUB"
+SOFTWARE_BRANCH="testing"
 
 main
 
