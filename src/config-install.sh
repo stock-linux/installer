@@ -478,15 +478,17 @@ config_advanced() {
 
 		cprint "1. bootloader: $BOOTLOADER_T on $BOOTLOADER"
 		cprint "2. kernel: $KERNEL"
+		cprint "3. software branch: $SOFTWARE_BRANCH"
 		cprint ""
 		cprint "0. Back to main menu"
 		cprint ""
-		prompt_user "Enter choice [0-2]: "
+		prompt_user "Enter choice [0-3]: "
 		read input
 
 		case $input in
 			1) config_bootloader;;
 			2) config_kernel;;
+			3) config_software_branch;;
 			0) break;;
 		esac
 	done
@@ -702,6 +704,29 @@ config_kernel() {
 	done
 }
 
+config_software_branch() {
+	unset done
+	while [ ! "$done" ]; do
+		cclear
+		cprint "1. rolling (not ready yet)"
+		cprint "'rolling' is the default branch for Stock Linux. It is the stablest"
+		cprint ""
+		cprint "2. testing"
+		cprint "'testing' is the dev branch. Not stable as 'rolling'"
+		cprint ""
+		cprint "0. Back to Advanced menu"
+		prompt_user "Enter choice [0-2]: "
+		read input
+		case $input in
+			1) continue;; #SOFTWARE_BRANCH="rolling";;
+			2) SOFTWARE_BRANCH="testing";;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done=$input
+	done
+}
+
+
 print_partitioning_tips() {
 	cclear
 	cprint "# Partitioning Tips #"
@@ -770,6 +795,7 @@ fi
 
 KERNEL="LTS"
 BOOTLOADER_T="GRUB"
+SOFTWARE_BRANCH="testing"
 
 main
 
