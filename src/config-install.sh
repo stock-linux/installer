@@ -449,9 +449,7 @@ config_timezone() {
 }
 
 config_advanced() {
-	unset done
-
-	while [ ! "$done" ]; do
+	while true; do
 		cclear
 
 		cprint "1. bootloader: $BOOTLOADER_T on $BOOTLOADER"
@@ -465,9 +463,8 @@ config_advanced() {
 		case $input in
 			1) config_bootloader;;
 			2) config_kernel;;
+			0) break;;
 		esac
-		[ "$input" -gt "2" ] && continue
-		done=$input
 	done
 }
 
