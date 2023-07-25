@@ -187,6 +187,30 @@ modify_disk() {
 	$disktool $disk
 }
 
+config_partitioning() {
+	unset done
+	while [ ! "$done" ]; do
+		cclear
+
+		cprint "1. Auto partitioning"
+		cprint ""
+		cprint "2. Manual partitioning"
+		cprint ""
+		cprint ""
+		cprint "0. Back to main menu"
+		prompt_user "Select partitioning way [1-2]: "
+		read input
+		case $input in
+			1) cclear; cprint "Not yet"; prompt_user "[Enter] to continue"; read;;
+			2) config_rootpart;;
+		esac
+		[ "$input" -gt "2" ] && continue
+		done="$input"
+
+
+	done
+}
+
 config_rootpart() {
 	unset partstatus
 	print_partitioning_tips
@@ -718,7 +742,7 @@ main() {
 		prompt_user "Enter choice [1-11]: "
 		read input
 		case $input in
-			1) config_rootpart;;
+			1) config_partitioning;;
 			2) config_keymap;;
 			3) config_timezone;;
 			4) config_locale;;
